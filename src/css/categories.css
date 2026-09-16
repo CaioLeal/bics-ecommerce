@@ -1,0 +1,228 @@
+/* =========================================
+             CATEGORIAS SHOWCASE
+========================================= */
+.categories-showcase {
+    display: flex; /* Mudamos de grid para flex para controlar melhor o centro */
+    justify-content: center;
+    align-items: center;
+    gap: 40px; 
+    padding: 60px 40px;
+    min-height: 100vh; /* Garante que a seção inteira se centralize na tela do usuário */
+    background-color: var(--color-primary); 
+}
+
+/* =========================================
+                 CATEGORY CARD
+========================================= */
+.category-card {
+    position: relative;
+    overflow: hidden; 
+    border-radius: 20px; 
+    
+    /* A SOLUÇÃO: Retiramos o height em vh e deixamos a largura ditar a altura */
+    width: 100%; 
+    max-width: 500px; /* Limita o card de ficar gigante em monitores ultrawide */
+    height: auto; /* Deixa o aspect-ratio calcular a altura perfeitamente */
+    aspect-ratio: 3 / 4; 
+    
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .05); 
+    transition: transform .6s cubic-bezier(.25, .46, .45, .94), 
+                box-shadow .6s ease;
+}
+
+/* "Firula": Moldura interna fina estilo quadro de arte */
+.category-card::after {
+    content: '';
+    position: absolute;
+    top: 15px; left: 15px; right: 15px; bottom: 15px;
+    border: 1px solid rgba(255, 255, 255, .2);
+    border-radius: 12px;
+    z-index: 5;
+    pointer-events: none;
+    transition: border-color .6s ease;
+}
+
+.category-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* Contêiner das Imagens */
+.category-images {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: #f5f5f5; 
+}
+
+.category-images img {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s cubic-bezier(.25, .46, .45, .94), 
+                opacity .8s ease-in-out;
+}
+
+.img-primary {
+    opacity: 1;
+    filter: grayscale(100%);
+    transform: scale(1);
+    z-index: 2;
+}
+
+.img-secondary {
+    opacity: 0;
+    transform: scale(1);
+    z-index: 1;
+}
+
+/* =========================================
+                 EFEITO HOVER
+========================================= */
+/* O card inteiro flutua e a sombra aumenta */
+.category-card:hover {
+    transform: translateY(-12px); 
+    box-shadow: 0 25px 45px rgba(0, 0, 0, .15); 
+}
+
+/* A moldura interna brilha */
+.category-card:hover::after {
+    border-color: rgba(255, 255, 255, .7);
+}
+
+.category-card:hover .img-primary {
+    opacity: 0;
+}
+
+.category-card:hover .img-secondary {
+    opacity: 1;
+    transform: scale(1.08); 
+    z-index: 3;
+}
+
+/* =========================================
+             CONTEÚDO / TEXTOS
+========================================= */
+.category-content {
+    position: absolute;
+    bottom: 0; left: 0; width: 100%;
+    padding: 50px 30px 40px;
+    background: linear-gradient(to top, rgba(0,0,0,.6) 0%, transparent 100%);
+    color: var(--color-text-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    z-index: 4; 
+}
+
+.category-title {
+    font-family: var(--font-logo); 
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 0;
+    transition: transform .6s ease;
+}
+
+.category-action {
+    font-size: .75rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0; 
+    transform: translateY(20px); 
+    transition: all .6s ease;
+}
+
+.category-action .line {
+    width: 0;
+    height: 1px;
+    background-color: var(--color-text-light);
+    transition: width .6s ease .2s;
+}
+
+.category-card:hover .category-title {
+    transform: translateY(-15px); 
+}
+
+.category-card:hover .category-action {
+    opacity: 1; 
+    transform: translateY(0);
+}
+
+.category-card:hover .category-action .line {
+    width: 40px; 
+}
+
+/* =========================================
+               RESPONSIVIDADE
+========================================= */
+
+/* Tablets / Monitores Menores (Deitados) */
+@media (max-width: 1200px) {
+    .category-card {
+        height: 55vh; /* Fica um pouco menor no tablet para dar mais respiro */
+    }
+}
+
+/* Tablets (Em pé) */
+@media (max-width: 992px) {
+    .categories-showcase {
+        gap: 20px;
+        padding: 60px 20px;
+    }
+    .category-card {
+        height: 50vh;
+    }
+    .category-title { font-size: 1.6rem; }
+}
+
+/* Celulares (Mobile) */
+@media (max-width: 768px) {
+    .categories-showcase {
+        min-height: auto; /* Tira a altura de 100vh da seção */
+        padding: 40px 15px;
+        gap: 15px;
+    }
+    
+    .category-card {
+        /* No mobile, eles ficam lado a lado e calculam a altura pela largura para caberem juntos */
+        height: auto; 
+        width: calc(50% - 7.5px); 
+        aspect-ratio: 3 / 4.5; /* Deixa eles um pouquinho mais altos no celular */
+        border-radius: 12px; 
+    }
+    
+    /* Moldura menor no celular */
+    .category-card::after {
+        top: 8px; left: 8px; right: 8px; bottom: 8px;
+        border-radius: 8px;
+    }
+    
+    .category-content {
+        padding: 30px 10px 20px;
+    }
+    
+    .category-title {
+        font-size: 1.1rem;
+        letter-spacing: 1px;
+    }
+    
+    .img-primary { opacity: 0 !important; }
+    .img-secondary { opacity: 1 !important; }
+    
+    .category-action {
+        opacity: 1;
+        transform: translateY(0);
+        font-size: .6rem;
+    }
+    .category-action .line { width: 30px; }
+    .category-title { transform: translateY(-8px); }
+}

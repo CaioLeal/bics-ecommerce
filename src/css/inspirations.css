@@ -1,0 +1,109 @@
+/* =========================================
+             INSPIRATIONS SECTION
+========================================= */
+.inspirations-section {
+    padding: 80px 40px 120px;
+    background-color: var(--color-primary);
+    max-width: 1800px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-family: var(--font-main);
+    font-size: 2.2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    letter-spacing: 2px;
+    color: var(--color-black);
+}
+
+.inspirations-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 35px;
+}
+
+/* =========================================
+           INSPIRATION CARD MODIFIERS
+========================================= */
+.inspiration-card {
+    width: 100%;
+    height: auto;
+    max-height: none;
+    aspect-ratio: 3 / 4;
+}
+
+/* O Segredo: Removemos o grayscale para nascer colorida! */
+.inspiration-card .img-primary {
+    filter: none; 
+}
+
+/* Ajustes na tipografia para caber em cards mais estreitos */
+.inspiration-card .category-title {
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+}
+
+.inspiration-card .category-content {
+    padding: 40px 20px 30px; /* Reduzimos o padding interno */
+}
+
+/* =========================================
+               RESPONSIVIDADE
+========================================= */
+
+/* Tablets (Em pé e Deitados) */
+@media (max-width: 1200px) {
+    .inspirations-grid {
+        /* Muda de Grid para Scroll Lateral no Tablet/Mobile */
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 30px; 
+        gap: 15px;
+    }
+    
+    /* Estilizando a barra de rolagem horizontal */
+    .inspirations-grid::-webkit-scrollbar {
+        height: 6px;
+    }
+    .inspirations-grid::-webkit-scrollbar-track {
+        background: rgba(0,0,0,.05);
+        border-radius: 10px;
+    }
+    .inspirations-grid::-webkit-scrollbar-thumb {
+        background: var(--color-black);
+        border-radius: 10px;
+    }
+
+    .inspiration-card {
+        flex: 0 0 35%; /* Mostra ~3 itens por vez na tela */
+        scroll-snap-align: start;
+        height: 50vh;
+    }
+}
+
+/* Celulares (Mobile) */
+@media (max-width: 768px) {
+    .inspirations-section {
+        padding: 50px 20px 80px;
+    }
+    
+    .section-title {
+        font-size: 1.6rem;
+        margin-bottom: 30px;
+    }
+    
+    .inspirations-grid {
+        gap: 12px;
+        padding-bottom: 20px;
+    }
+
+    .inspiration-card {
+        flex: 0 0 75%; /* Mostra 1 item inteiro e a pontinha do próximo (chama pro arrasto) */
+        height: 55vh;
+        border-radius: 12px;
+    }
+}

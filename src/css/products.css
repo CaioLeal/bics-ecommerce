@@ -1,0 +1,237 @@
+/* =========================================
+             PRODUCTS SECTION
+========================================= */
+.products-section {
+    padding: 80px 40px 120px;
+    background-color: var(--color-primary);
+    max-width: 1800px;
+    margin: 0 auto;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+/* =========================================
+             PRODUCT CARD
+========================================= */
+.product-card {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espaço entre a foto e o texto */
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/* O quadrado perfeito (4/4 ou 1:1) */
+.product-media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1; 
+    border-radius: 12px; /* Cantos levemente arredondados para combinar com a Bics */
+    overflow: hidden;
+    background-color: #f7f7f7; /* Fundo cinza bem clarinho igual ao da LV */
+}
+
+.product-media img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s cubic-bezier(.25, .46, .45, .94),
+                opacity .8s ease-in-out;
+}
+
+.product-media::after {
+    content: '';
+    position: absolute;
+    top: 12px; 
+    left: 12px; 
+    right: 12px; 
+    bottom: 12px;
+    border: 1px solid rgba(255, 255, 255, .3); /* Linha sutil branca */
+    border-radius: 8px; /* Acompanha o arredondamento da caixa */
+    z-index: 4; /* Fica acima da foto, mas ABAIXO do coração (que é 5) */
+    pointer-events: none; /* Garante que não vai atrapalhar o clique no botão de favoritar */
+    transition: border-color .6s ease;
+}
+
+/* Opcional: A linha ganha mais brilho quando passa o mouse no card do produto */
+.product-card:hover .product-media::after {
+    border-color: rgba(255, 255, 255, .8);
+}
+
+.product-img-primary {
+    opacity: 1;
+    z-index: 2;
+}
+
+.product-img-secondary {
+    opacity: 0;
+    transform: scale(1);
+    z-index: 1;
+}
+
+/* =========================================
+             HOVER EFFECTS
+========================================= */
+.product-card:hover .product-img-primary {
+    opacity: 0;
+}
+
+.product-card:hover .product-img-secondary {
+    opacity: 1;
+    transform: scale(1.08); /* Aquele zoom luxuoso apenas na foto colorida */
+    z-index: 3;
+}
+
+/* =========================================
+             PRODUCT ACTIONS
+========================================= */
+.product-actions {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 5;
+    display: flex;
+    gap: 12px;
+}
+
+.btn-favorite, .btn-cart {
+    background: transparent;
+    color: var(--color-black);
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Deixa os ícones mais finos */
+.product-actions .material-symbols-outlined {
+    font-size: 24px;
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Coração fica semi-transparente sempre */
+.btn-favorite {
+    opacity: 0.5;
+}
+.btn-favorite:hover {
+    opacity: 1;
+    transform: scale(1.15);
+}
+
+/* Sacola começa escondida e levemente puxada pro lado */
+.btn-cart {
+    opacity: 0;
+    transform: translateX(10px);
+}
+
+/* Sacola aparece ao passar o mouse no CARD INTEIRO */
+.product-card:hover .btn-cart {
+    opacity: 0.5;
+    transform: translateX(0);
+}
+.btn-cart:hover {
+    opacity: 1 !important;
+    transform: scale(1.15) !important;
+}
+
+/* =========================================
+             PRODUCT DETAILS
+========================================= */
+.product-details {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+}
+
+.product-name {
+    font-family: var(--font-main);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-black);
+    line-height: 1.4;
+}
+
+.product-price {
+    font-family: var(--font-main);
+    font-size: .95rem;
+    color: #666;
+    font-weight: 400;
+}
+
+/* =========================================
+             ACTION BUTTON
+========================================= */
+.products-action {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.btn-explore {
+    display: inline-block;
+    background-color: var(--color-primary); /* Fundo branco */
+    color: var(--color-black);
+    border: 1px solid var(--color-black);
+    padding: 16px 45px;
+    border-radius: 50px; /* Botão totalmente arredondado */
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all .4s ease;
+}
+
+.btn-explore:hover {
+    background-color: var(--color-black); /* Inverte as cores no Hover */
+    color: var(--color-primary);
+}
+
+/* =========================================
+               RESPONSIVIDADE
+========================================= */
+/* Tablets (Em pé e Deitados) */
+@media (max-width: 1200px) {
+    .products-grid {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 30px;
+        gap: 20px;
+    }
+
+    .products-grid::-webkit-scrollbar { height: 6px; }
+    .products-grid::-webkit-scrollbar-track { background: rgba(0,0,0,.05); border-radius: 10px; }
+    .products-grid::-webkit-scrollbar-thumb { background: var(--color-black); border-radius: 10px; }
+
+    .product-card {
+        flex: 0 0 38%; /* Mostra quase 3 itens */
+        scroll-snap-align: start;
+    }
+}
+
+/* Celulares (Mobile) */
+@media (max-width: 768px) {
+    .products-section {
+        padding: 50px 20px 80px;
+    }
+    
+    .product-card {
+        flex: 0 0 75%; /* Mostra 1 inteiro e a ponta do próximo */
+    }
+
+    .product-name { font-size: .9rem; }
+    .product-price { font-size: .85rem; }
+    
+    .btn-explore {
+        width: 100%;
+        text-align: center;
+        padding: 14px 20px;
+    }
+}
