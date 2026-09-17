@@ -68,7 +68,7 @@
     background-color: var(--color-primary);
     color: var(--color-black);
     z-index: 2000;
-    transition: left .5s cubic-bezier(.77, .2, .05, 1);
+    transition: all .5s cubic-bezier(.77, .2, .05, 1);
     display: flex;
     flex-direction: column;
     padding: 40px;
@@ -124,6 +124,232 @@
     font-weight: 500;
 }
 
+/* =========================================
+        SIDEBAR LOGIN (Vem da Direita)
+========================================= */
+
+/* Modificador para fazer a sidebar vir da direita */
+.sidebar.sidebar-right {
+    left: auto;
+    right: -450px; /* Começa escondida na direita */
+}
+
+.sidebar.sidebar-right.active {
+    right: 0;
+    left: auto;
+}
+
+/* Header do Login */
+#login-sidebar .sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.sidebar-title {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+/* Estrutura Interna */
+.login-content {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    /* Adiciona um padding extra embaixo para garantir o scroll total */
+    padding-bottom: 60px; 
+}
+
+.login-content h3 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+/* Botões Sociais */
+.social-login-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 500;
+    transition: var(--transition-smooth);
+}
+
+.social-btn:hover {
+    background-color: #f5f5f5;
+}
+
+.social-btn img {
+    width: 18px;
+    height: 18px;
+}
+
+/* Divisor "ou" */
+.login-divider {
+    text-align: center;
+    position: relative;
+    margin: 20px 0;
+}
+
+.login-divider span {
+    background-color: var(--color-primary);
+    padding: 0 15px;
+    font-size: 12px;
+    color: #666;
+    position: relative;
+    z-index: 1;
+}
+
+/* Formulário BICS (Estilo Flutuante) */
+.bics-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-hint {
+    text-align: right;
+    font-size: 11px;
+    color: #666;
+    margin-bottom: -10px;
+}
+
+.input-group {
+    position: relative;
+    width: 100%;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px;
+    background: transparent;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color .3s;
+}
+
+.input-group label {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #666;
+    background-color: var(--color-primary);
+    padding: 0 5px;
+    pointer-events: none;
+    transition: all .3s ease;
+}
+
+/* Efeito do Placeholder subindo */
+.input-group input:focus,
+.input-group input:not(:placeholder-shown) {
+    border-color: var(--color-black);
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+    top: 0;
+    font-size: 11px;
+    color: var(--color-black);
+}
+
+/* Ícone de Visibilidade da Senha */
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+}
+
+.toggle-password span {
+    font-size: 18px;
+}
+
+/* Links de texto */
+.forgot-password {
+    font-size: 12px;
+    text-decoration: underline;
+    margin-top: -10px;
+}
+
+.magic-link-text {
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 10px 0;
+}
+
+.magic-link-text a {
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+/* Botões Principais */
+.btn-solid-black {
+    width: 100%;
+    padding: 16px;
+    background-color: var(--color-black);
+    color: var(--color-primary);
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: opacity .3s;
+}
+
+.btn-solid-black:hover {
+    opacity: .8;
+}
+
+.btn-outline-black {
+    width: 100%;
+    padding: 16px;
+    background-color: transparent;
+    color: var(--color-black);
+    border: 1px solid var(--color-black);
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color .3s, color .3s;
+}
+
+.btn-outline-black:hover {
+    background-color: #f5f5f5;
+}
+
+/* Divisão entre Login e Cadastro */
+.section-divider {
+    border: none;
+    border-top: 1px solid #eaeaea;
+    margin: 10px 0;
+}
+
+.register-section p {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
 /* Fundo escuro quando o menu abre */
 .overlay {
     position: fixed;
@@ -160,4 +386,6 @@
     .navbar-left, .navbar-right { gap: 15px; }
     .sidebar { max-width: 85%; padding: 30px 20px; }
     .sidebar-header { margin-bottom: 40px; }
+    /* Corrige o right no mobile para garantir que feche 100% */
+    .sidebar.sidebar-right { right: -100%; }
 }

@@ -105,7 +105,7 @@
     color: var(--color-black);
     border: none;
     cursor: pointer;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    transition: transform .3s ease, opacity .3s ease;
 }
 
 /* Deixa os ícones mais finos */
@@ -116,7 +116,7 @@
 
 /* Coração fica semi-transparente sempre */
 .btn-favorite {
-    opacity: 0.5;
+    opacity: .5;
 }
 .btn-favorite:hover {
     opacity: 1;
@@ -131,7 +131,7 @@
 
 /* Sacola aparece ao passar o mouse no CARD INTEIRO */
 .product-card:hover .btn-cart {
-    opacity: 0.5;
+    opacity: .5;
     transform: translateX(0);
 }
 .btn-cart:hover {

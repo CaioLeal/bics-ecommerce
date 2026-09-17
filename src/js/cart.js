@@ -25,7 +25,7 @@ export function initCartAnimation() {
             flyingImg.style.pointerEvents = 'none'; 
             
             // MUDANÇA 1: Tempo aumentado para 1.5s para um voo mais lento e luxuoso
-            flyingImg.style.transition = 'all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            flyingImg.style.transition = 'all 1.5s cubic-bezier(.25, .46, .45, .94)';
 
             document.body.appendChild(flyingImg);
 
@@ -42,7 +42,7 @@ export function initCartAnimation() {
             setTimeout(() => {
                 flyingImg.remove();
                 
-                navbarCart.style.transition = 'transform 0.2s ease';
+                navbarCart.style.transition = 'transform .2s ease';
                 navbarCart.style.transform = 'scale(1.3)';
                 
                 setTimeout(() => {
