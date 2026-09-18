@@ -1,6 +1,7 @@
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { initNavbar } from './navbar.js';
+import { initHeroInteractions } from './hero.js';
 import { initCartAnimation } from './cart.js'; // Mantido do seu código original
 import { initFooter } from './footer.js';
 import { initProductPage } from './product.js';
@@ -8,6 +9,7 @@ import { initProductPage } from './product.js';
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Inicializa a Navbar (agora apenas UMA vez!)
     initNavbar();
+    initHeroInteractions();
     initCartAnimation();
     initFooter();
     initProductPage()

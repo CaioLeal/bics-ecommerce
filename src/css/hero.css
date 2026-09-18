@@ -41,6 +41,36 @@
 }
 
 /* =========================================
+             SCROLL INDICATOR (SETA)
+========================================= */
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px; 
+    left: 50%;
+    /* O translate centraliza no eixo X e é a base da nossa animação no eixo Y */
+    transform: translateX(-50%);
+    z-index: 10; /* Fica acima do gradiente branco */
+    color: var(--color-black); /* Preto para contrastar com o branco do fundo */
+    opacity: .7;
+    /* A Animação "Manteiga": 2 segundos, loop infinito, curva suave */
+    animation: floatDown 2s infinite ease-in-out;
+    transition: opacity .4s ease; /* Transição para sumir ao rolar a página */
+}
+
+/* Deixa o ícone mais fino e elegante */
+.scroll-indicator .material-symbols-outlined {
+    font-size: 32px;
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Keyframes da flutuação suave */
+@keyframes floatDown {
+    0%   { transform: translate(-50%, 0); }
+    50%  { transform: translate(-50%, 15px); } /* Desce 15px na metade do tempo */
+    100% { transform: translate(-50%, 0); }
+}
+
+/* =========================================
               CONTEÚDO PRINCIPAL
 ========================================= */
 .main-content {
@@ -92,6 +122,10 @@
         /* 1. Reduzimos a altura do gradiente de 70% para 55% para o vídeo aparecer mais */
         height: 55%; 
         background: linear-gradient(to top, var(--color-primary) 0%, rgba(255, 255, 255, .95) 60%, transparent 100%);
+    }
+
+    .scroll-indicator {
+        bottom: calc(15vh + 20px); 
     }
     
     /* 2. O SEGREDO AQUI: Puxamos a seção principal para cima */
