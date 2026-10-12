@@ -1,6 +1,6 @@
 <div align="center">
   <!-- Replace the src below with your actual BICS logo link -->
-  <img width="200" height="auto" alt="BICS Logo" src="https://via.placeholder.com/487x97?text=BICS+LOGO" />
+  <img width="487" height="97" alt="bicslogo" src="https://github.com/user-attachments/assets/e8fc973f-b43f-43a5-92bd-ab2a340cbe31" />
 </div>
 
 ---
@@ -20,7 +20,8 @@ The main technical differentiator of this application is the seamless integratio
   
 <div align="center">
   <!-- Replace the src below with your actual BICS project screenshot -->
-  <img width="1920" height="1080" alt="BICS E-commerce" src="https://via.placeholder.com/1920x1080?text=BICS+Project+Screenshot" />
+  <img width="1920" height="1080" alt="Bics" src="https://github.com/user-attachments/assets/cdd91ea9-903c-4bb0-827e-2a298428c7f2" />
+
 </div>
 
 ---
