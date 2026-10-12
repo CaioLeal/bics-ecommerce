@@ -27,7 +27,7 @@ The main technical differentiator of this application is the seamless integratio
 ---
 
 ### 🌐 View the project:
-[View Project Online](https://caioleal.github.io/BICS-Ecommerce/) *(Note: Front-end demo only)*
+[View Project Online](https://bicsfashion.vercel.app/) *(Note: Front-end demo only)*
 
 ### 🔗 Project Link:
 [Luxury E-Commerce Experience](https://github.com/CaioLeal/BICS-Ecommerce)
