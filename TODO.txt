@@ -8,6 +8,30 @@ https://www.prada.com/br/pt.html
 https://www.hugoboss.com.br/boss
 
 
+Para as Imagens:
+
+Na primeira caixa (Localizar), escreva: src="/img/
+
+Na segunda caixa (Substituir), escreva: src="public/img/
+
+Clique no botão de substituir tudo.
+
+Para os Vídeos:
+
+Localizar: src="/video/
+
+Substituir: src="public/video/
+
+Clique em substituir tudo.
+
+Para o Ícone do topo (Favicon):
+
+Localizar: href="/img/
+
+Substituir: href="public/img/
+
+Clique em substituir tudo.
+
 Infos a marca:
 BICS — a identidade central
 BICS

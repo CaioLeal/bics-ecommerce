@@ -1,26 +1,45 @@
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 import { initNavbar } from './navbar.js';
 import { initHeroInteractions } from './hero.js';
-import { initCartAnimation } from './cart.js'; // Mantido do seu código original
+import { initCartAnimation } from './cart.js'; 
 import { initFooter } from './footer.js';
 import { initProductPage } from './product.js';
 
+// Função para carregar o AOS dinamicamente no navegador (Evita erros de módulo no XAMPP)
+function loadAOS() {
+    // 1. Carrega o CSS do AOS
+    const aosCSS = document.createElement('link');
+    aosCSS.rel = 'stylesheet';
+    aosCSS.href = 'https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css';
+    document.head.appendChild(aosCSS);
+
+    // 2. Carrega o JS do AOS
+    const aosScript = document.createElement('script');
+    aosScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js';
+    
+    // Quando o script terminar de carregar, inicializa as animações
+    aosScript.onload = () => {
+        if (window.AOS) {
+            window.AOS.init({
+                duration: 1000, 
+                easing: 'ease-out-cubic', 
+                once: true, 
+                offset: 50, 
+            });
+        }
+    };
+    document.body.appendChild(aosScript);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Inicializa a Navbar (agora apenas UMA vez!)
+    // 1. Inicializa os seus módulos
     initNavbar();
     initHeroInteractions();
     initCartAnimation();
     initFooter();
-    initProductPage()
+    initProductPage();
     
-    // 2. Inicializa o AOS para as animações
-    AOS.init({
-        duration: 1000, 
-        easing: 'ease-out-cubic', 
-        once: true, 
-        offset: 50, 
-    });
+    // 2. Carrega e inicializa o AOS de forma segura
+    loadAOS();
 
     // =========================================
     //  SISTEMA DE PERFORMANCE DO VÍDEO HERO
@@ -52,8 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Rola suavemente para o topo ao clicar (Como estamos usando o Lenis,
-        // é bom usar o scrollTo da janela nativo que o Lenis intercepta)
         topBtn.addEventListener("click", () => {
             window.scrollTo({ top: 0, behavior: "smooth" });
         });

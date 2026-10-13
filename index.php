@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+// Verifica se existe um cliente logado e guarda a inicial dele
+$cliente_logado = isset($_SESSION['cliente_logado']) && $_SESSION['cliente_logado'] === true;
+$nome_cliente = $cliente_logado ? $_SESSION['cliente_nome'] : '';
+$inicial_cliente = $cliente_logado ? strtoupper(substr($nome_cliente, 0, 1)) : '';
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -6,9 +15,10 @@
     <title>BICS — Beyond the Ordinary</title>
 
     <link rel="stylesheet" href="src/css/style.css">
+    
     <!-- Ícones do Google com traço fino (estilo luxo) -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" />
-    <link rel="icon" href="/img/icon.png" type="image/x-icon">   
+    <link rel="icon" href="public/img/icon.png" type="image/x-icon">   
 </head>
 <body>
     <!-- =========================================
@@ -33,7 +43,20 @@
         <div class="navbar-right">
             <a href="#" class="nav-item hidden-mobile">Fale conosco</a>
             <button class="nav-item icon-btn"><span class="material-symbols-outlined">favorite</span></button>
-            <button id="login-btn" class="nav-item icon-btn"><span class="material-symbols-outlined">person</span></button>
+            
+            <!-- Ícone de Login Dinâmico -->
+            <button id="login-btn" class="nav-item icon-btn" style="padding: 0;">
+                <?php if($cliente_logado): ?>
+                    <!-- Bolinha preta com a inicial do cliente -->
+                    <div style="width: 28px; height: 28px; background-color: var(--color-black); color: var(--color-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; font-family: var(--font-main);">
+                        <?php echo $inicial_cliente; ?>
+                    </div>
+                <?php else: ?>
+                    <!-- Ícone de pessoa padrão se não estiver logado -->
+                    <span class="material-symbols-outlined">person</span>
+                <?php endif; ?>
+            </button>
+
             <button id="cart-icon" class="nav-item icon-btn"><span class="material-symbols-outlined">shopping_bag</span></button>
         </div>
     </header>
@@ -55,19 +78,17 @@
         
         <nav class="sidebar-categories">
             <ul>
-                <li><a href="#">Presentes</a></li>
-                <li><a href="#">Novidades</a></li>
-                <li><a href="#">Feminino</a></li>
-                <li><a href="#">Masculino</a></li>
-                <li><a href="#">Bolsas</a></li>
-                <li><a href="#">Casa e estilo de vida</a></li>
-                <li><a href="#">Bicsphere</a></li>
+                <li><a href="categoria.php?id=1">Masculino</a></li>
+                <li><a href="categoria.php?id=2">Feminino</a></li>
+                <li><a href="categoria.php?id=3">Bolsas</a></li>
+                <li><a href="categoria.php?id=4">Acessórios</a></li>
+                <li><a href="#">BICS Magazine</a></li>
             </ul>
         </nav>
         
         <div class="sidebar-footer">
             <ul>
-                <li><a href="#"><span class="material-symbols-outlined">person</span> Entrar ou Registrar-se</a></li>
+                <li><a href="#" id="left-register-btn"><span class="material-symbols-outlined">person</span> Entrar ou Registrar-se</a></li>
                 <li><a href="#"><span class="material-symbols-outlined">shopping_bag</span> Carrinho</a></li>
                 <li><a href="#"><span class="material-symbols-outlined">favorite</span> Lista de desejos</a></li>
                 <li><a href="#"><span class="material-symbols-outlined">call</span> Fale conosco</a></li>
@@ -88,60 +109,121 @@
         </div>
         
         <div class="login-content">
-            <!-- Seção de Login Existente -->
-            <div class="login-section">
-                <h3>Já possuo uma conta</h3>
-                
-                <div class="social-login-buttons">
-                    <button class="social-btn google-btn">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google">
-                        Fazer Login com Google
-                    </button>
-                    <button class="social-btn apple-btn">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple">
-                        Iniciar Sessão com a Apple
-                    </button>
+            <?php if($cliente_logado): ?>
+                <!-- Visão do Cliente Logado -->
+                <div class="login-section" style="text-align: center; margin-top: 40px;">
+                    <div style="width: 80px; height: 80px; background-color: var(--color-black); color: var(--color-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 600; margin: 0 auto 20px;">
+                        <?php echo $inicial_cliente; ?>
+                    </div>
+                    <h3 style="font-size: 20px;">Olá, <?php echo htmlspecialchars($nome_cliente); ?>!</h3>
+                    <p style="color: #666; margin-bottom: 40px;">Bem-vindo(a) ao universo BICS.</p>
+                    
+                    <a href="logout_cliente.php" class="btn-outline-black" style="display: block; text-align: center; text-decoration: none;">Sair da Conta</a>
+                </div>
+            <?php else: ?>
+                <!-- Visão Normal (Para quem não está logado) -->
+                <div class="login-section">
+                    <h3>Já possuo uma conta</h3>
+                    <div class="social-login-buttons">
+                        <button class="social-btn google-btn"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google">Fazer Login com Google</button>
+                        <button class="social-btn apple-btn"><img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple">Iniciar Sessão com a Apple</button>
+                    </div>
+                    <div class="login-divider"><span>ou</span></div>
+                    
+                    <!-- Apontando para o index.php agora -->
+                    <form class="bics-form" action="login_cliente.php" method="POST">
+                        <p class="form-hint">Campos Obrigatórios*</p>
+                        <div class="input-group">
+                            <input type="email" id="login-email" name="email" required placeholder=" ">
+                            <label for="login-email">Login (E-mail)*</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="password" id="login-senha" name="senha" required placeholder=" ">
+                            <label for="login-senha">Senha*</label>
+                            <button type="button" class="toggle-password"><span class="material-symbols-outlined">visibility_off</span></button>
+                        </div>
+                        <a href="#" class="forgot-password">Esqueceu sua senha?</a>
+                        <p class="magic-link-text">Ou use o link de uso único para login: <a href="#">Envie-me por e-mail o link</a></p>
+                        <button type="submit" class="btn-solid-black">Entrar</button>
+                    </form>
                 </div>
 
-                <div class="login-divider"><span>ou</span></div>
+                <hr class="section-divider">
 
-                <form class="bics-form" onsubmit="event.preventDefault();">
-                    <p class="form-hint">Campos Obrigatórios*</p>
-                    
-                    <div class="input-group">
-                        <input type="text" id="login-email" required placeholder=" ">
-                        <label for="login-email">Login*</label>
-                    </div>
-
-                    <div class="input-group">
-                        <input type="password" id="login-senha" required placeholder=" ">
-                        <label for="login-senha">Senha*</label>
-                        <button type="button" class="toggle-password">
-                            <span class="material-symbols-outlined">visibility_off</span>
-                        </button>
-                    </div>
-
-                    <a href="#" class="forgot-password">Esqueceu sua senha?</a>
-                    
-                    <p class="magic-link-text">Ou use o link de uso único para login: <a href="#">Envie-me por e-mail o link</a></p>
-
-                    <button type="submit" class="btn-solid-black">Entrar</button>
-                </form>
-            </div>
-
-            <hr class="section-divider">
-
-            <!-- Seção de Cadastro Novo -->
-            <div class="register-section">
-                <h3>Ainda não possuo uma conta</h3>
-                <p>Personalize sua experiência criando uma conta BICS.</p>
-                <button class="btn-outline-black">Crie sua Conta MyBics</button>
-            </div>
+                <div class="register-section">
+                    <h3>Ainda não possuo uma conta</h3>
+                    <p>Personalize sua experiência criando uma conta BICS.</p>
+                    <button id="open-register-btn" class="btn-outline-black">Crie sua Conta MyBics</button>
+                </div>
+            <?php endif; ?>
         </div>
     </aside>
 
     <!-- Fundo escuro atrás do menu lateral quando aberto -->
     <div id="sidebar-overlay" class="overlay"></div>
+
+    <!-- =========================================
+                  MODAL DE CADASTRO (MYBICS)
+    ========================================= -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Criar Conta MyBics</h2>
+                <button id="close-modal-btn" class="nav-item icon-btn">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <!-- <p class="form-hint">Personalize sua experiência BICS.</p> -->
+                <!-- O action agora aponta para o PHP e removemos o block do Javascript -->
+                <form class="bics-form" action="cadastrar_cliente.php" method="POST">
+                    <div class="input-row">
+                        <div class="input-group">
+                            <input type="text" id="reg-nome" name="nome" required placeholder=" ">
+                            <label for="reg-nome">Nome*</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" id="reg-sobrenome" name="sobrenome" required placeholder=" ">
+                            <label for="reg-sobrenome">Sobrenome*</label>
+                        </div>
+                    </div>
+
+                    <div class="input-group" style="margin-bottom: 15px;">
+                        <input type="email" id="reg-email" name="email" required placeholder=" ">
+                        <label for="reg-email">E-mail*</label>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <input type="password" id="reg-senha" name="senha" required placeholder=" ">
+                            <label for="reg-senha">Senha*</label>
+                            <button type="button" class="toggle-password">
+                                <span class="material-symbols-outlined">visibility_off</span>
+                            </button>
+                        </div>
+                        <div class="input-group">
+                            <input type="password" id="reg-confirma-senha" name="confirma_senha" required placeholder=" ">
+                            <label for="reg-confirma-senha">Confirmação de Senha*</label>
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <input type="tel" id="reg-telefone" name="telefone" required placeholder=" " maxlength="19">
+                            <label for="reg-telefone">Telefone*</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="date" id="reg-nascimento" name="nascimento" required placeholder=" ">
+                            <label for="reg-nascimento">Nascimento*</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-solid-black mt-20">Criar Minha Conta</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- =========================================
                        HERO SECTION
@@ -150,7 +232,7 @@
         <!-- Wrapper do Vídeo de Fundo (Fixo para efeito Parallax) -->
         <div class="hero-video-wrapper">
             <video class="hero-video" autoplay loop muted playsinline disablePictureInPicture oncontextmenu="return false;">
-                <source src="/video/hero/herovideo.mp4" type="video/mp4">
+                <source src="public/video/hero/herovideo.mp4" type="video/mp4">
             </video>
         </div>
 
@@ -174,12 +256,12 @@
             
             <!-- Categoria Masculina -->
             <div class="category-card">
-                <a href="#" class="category-link">
+                <a href="categoria.php?id=1" class="category-link">
                     <div class="category-images">
                         <!-- Imagem 1: Pose 1 (Fica cinza pelo CSS) -->
-                        <img src="https://files.catbox.moe/9afvbf.png" class="img-primary">
+                        <img src="public/img/categories/capa_ele_primary.jpg" class="img-primary" alt="Moda Masculina">
                         <!-- Imagem 2: Pose 2 (Colorida, aparece no hover) -->
-                        <img src="https://files.catbox.moe/g8ac5z.png" alt="Moda Masculina Detalhe" class="img-secondary">
+                        <img src="public/img/categories/capa_ele_secondary.jpg" class="img-secondary" alt="Moda Masculina Detalhe">
                     </div>
                     
                     <div class="category-content">
@@ -193,12 +275,12 @@
 
             <!-- Categoria Feminina -->
             <div class="category-card">
-                <a href="#" class="category-link">
+                <a href="categoria.php?id=2" class="category-link">
                     <div class="category-images">
                         <!-- Imagem 1: Pose 1 (Fica cinza pelo CSS) -->
-                        <img src="https://files.catbox.moe/ptya0d.png" class="img-primary">
+                        <img src="public/img/categories/capa_ela_primary.jpg" class="img-primary" alt="Moda Feminina">
                         <!-- Imagem 2: Pose 2 (Colorida, aparece no hover) -->
-                        <img src="https://files.catbox.moe/yh2vdj.png" class="img-secondary">
+                        <img src="public/img/categories/capa_ela_secondary.jpg" class="img-secondary" alt="Moda Feminina Detalhe">
                     </div>
                     
                     <div class="category-content">
@@ -224,8 +306,8 @@
                 <div class="category-card inspiration-card" data-aos="fade-up" data-aos-delay="100">
                     <a href="#" class="category-link">
                         <div class="category-images">
-                            <img src="/img/inspirations/beyondbics1.png" alt="Beyond the ordinary" class="img-primary">
-                            <img src="/img/inspirations/beyondbics2.png" alt="Detalhe" class="img-secondary">
+                            <img src="public/img/inspirations/beyondbics1.png" alt="Beyond the ordinary" class="img-primary">
+                            <img src="public/img/inspirations/beyondbics2.png" alt="Detalhe" class="img-secondary">
                         </div>
                         <div class="category-content">
                             <h3 class="category-title">Beyond the ordinary</h3>
@@ -238,8 +320,8 @@
                 <div class="category-card inspiration-card" data-aos="fade-up" data-aos-delay="200">
                     <a href="#" class="category-link">
                         <div class="category-images">
-                            <img src="/img/inspirations/causbics1.png" alt="Bics x Cauã Style" class="img-primary">
-                            <img src="/img/inspirations/causbics2.png" alt="Detalhe" class="img-secondary">
+                            <img src="public/img/inspirations/causbics1.png" alt="Bics x Cauã Style" class="img-primary">
+                            <img src="public/img/inspirations/causbics2.png" alt="Detalhe" class="img-secondary">
                         </div>
                         <div class="category-content">
                             <h3 class="category-title">Bics x Cauã's Style</h3>
@@ -252,8 +334,8 @@
                 <div class="category-card inspiration-card" data-aos="fade-up" data-aos-delay="300">
                     <a href="#" class="category-link">
                         <div class="category-images">
-                            <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=800&auto=format&fit=crop" alt="Performance" class="img-primary">
-                            <img src="https://images.unsplash.com/photo-1517438476312-10d79c077509?q=80&w=800&auto=format&fit=crop" alt="Detalhe" class="img-secondary">
+                            <img src="img/inspirations/performancebics1.png" alt="Performance" class="img-primary">
+                            <img src="img/inspirations/performancebics2.png" alt="Detalhe" class="img-secondary">
                         </div>
                         <div class="category-content">
                             <h3 class="category-title">Performance</h3>
@@ -280,8 +362,8 @@
                 <div class="category-card inspiration-card" data-aos="fade-up" data-aos-delay="500">
                     <a href="#" class="category-link">
                         <div class="category-images">
-                            <img src="/img/inspirations/sexybics1.png" alt="City x Bics" class="img-primary">
-                            <img src="/img/inspirations/sexybics2.png" alt="Detalhe" class="img-secondary">
+                            <img src="public/img/inspirations/sexybics1.png" alt="City x Bics" class="img-primary">
+                            <img src="public/img/inspirations/sexybics2.png" alt="Detalhe" class="img-secondary">
                         </div>
                         <div class="category-content">
                             <h3 class="category-title">Bics x Sex and the City</h3>
@@ -335,8 +417,8 @@
                                 <span class="material-symbols-outlined">favorite</span>
                             </button>
                         </div>
-                        <img src="/img/colections/2.jpg" alt="Calça Jeans" class="product-img-primary">
-                        <img src="/img/colections/2-1.jpg" alt="Detalhe Calça" class="product-img-secondary">
+                        <img src="public/img/colections/2.jpg" alt="Calça Jeans" class="product-img-primary">
+                        <img src="public/img/colections/2-1.jpg" alt="Detalhe Calça" class="product-img-secondary">
                     </div>
                     <div class="product-details">
                         <h3 class="product-name">Calça Jeans de Pernas Amplas</h3>
@@ -356,8 +438,8 @@
                                 <span class="material-symbols-outlined">favorite</span>
                             </button>
                         </div>
-                        <img src="/img/colections/3.jpg" alt="Perfume" class="product-img-primary">
-                        <img src="/img/colections/3.jpg" alt="Perfume Detalhe" class="product-img-secondary">
+                        <img src="public/img/colections/3.jpg" alt="Perfume" class="product-img-primary">
+                        <img src="public/img/colections/3.jpg" alt="Perfume Detalhe" class="product-img-secondary">
                     </div>
                     <div class="product-details">
                         <h3 class="product-name">Perfume L'Immensité 100ml</h3>
@@ -398,8 +480,8 @@
                                 <span class="material-symbols-outlined">favorite</span>
                             </button>
                         </div>
-                        <img src="/img/colections/5.jpg" alt="Tênis" class="product-img-primary">
-                        <img src="/img/colections/5.jpg" alt="Tênis Detalhe" class="product-img-secondary">
+                        <img src="public/img/colections/5.jpg" alt="Tênis" class="product-img-primary">
+                        <img src="public/img/colections/5.jpg" alt="Tênis Detalhe" class="product-img-secondary">
                     </div>
                     <div class="product-details">
                         <h3 class="product-name">Tênis Trainer Monogram</h3>
@@ -687,7 +769,7 @@
                             <!-- Vídeo silenciado e em loop -->
                             <div class="accordion-media">
                             <!-- Vídeo silenciado e em loop -->
-                            <img src="/img/universe/ourfashion.png" class="accordion-img">
+                            <img src="public/img/universe/ourfashion.png" class="accordion-img">
                         </div>
                         </div>
                         <div class="accordion-footer">
@@ -702,7 +784,7 @@
                         <div class="accordion-media">
                             <!-- Vídeo silenciado e em loop -->
                             <video class="accordion-video" autoplay loop muted playsinline disablePictureInPicture>
-                                <source src="/video/universe/runwaywalk.mp4" type="video/mp4">
+                                <source src="public/video/universe/runwaywalk.mp4" type="video/mp4">
                             </video>
                         </div>
                         <div class="accordion-footer">
@@ -716,7 +798,7 @@
                     <div class="accordion-card-inner" data-aos="fade-up" data-aos-delay="100">
                         <div class="accordion-media">
                             <!-- Vídeo silenciado e em loop -->
-                            <img src="/img/universe/bicsmagazine.png" class="accordion-img">
+                            <img src="public/img/universe/bicsmagazine.png" class="accordion-img">
                         </div>
                         <div class="accordion-footer">
                             <h3>BICS Magazine</h3>
@@ -801,7 +883,7 @@
             <div class="footer-agency">
                 <a href="https://www.cosmusagency.com/" class="cosmus-badge" title="Desenvolvido por Cosmus Agency">
                     <!-- Substitua pelo caminho correto do seu GIF se precisar -->
-                    <img src="/img/Cosmus-Buttom-Transparent.gif" alt="Cosmus Agency Logo" class="agency-logo">
+                    <img src="public/img/Cosmus-Buttom-Transparent.gif" alt="Cosmus Agency Logo" class="agency-logo">
                 </a>
             </div>
         </div>
@@ -814,7 +896,10 @@
         <span class="material-symbols-outlined">keyboard_arrow_up</span>
     </button>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <!-- O Vite injeta os scripts como module nativamente -->
     <script type="module" src="src/js/main.js"></script>
+    
+    
 </body>
 </html>

@@ -13,17 +13,16 @@ export function initNavbar() {
     const closeLoginBtn = document.getElementById('close-login-btn');
     const sidebarLogin = document.getElementById('login-sidebar');
 
-    // Verifica se os elementos principais existem antes de rodar o código (Evita erros no console)
-    if (!navbar || !sidebarMenu || !sidebarLogin) {
-        console.error("Navbar: Elementos essenciais não encontrados.");
-        return;
-    }
+    // Elementos do Modal de Registro
+    const openRegisterBtn = document.getElementById('open-register-btn');
+    const leftRegisterBtn = document.getElementById('left-register-btn'); // NOVO BOTAO ESQUERDO
+    const registerModal = document.getElementById('register-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
 
     // =========================================
     //   EFEITO SCROLL (TRANSPARENTE PARA BRANCO)
     // =========================================
     window.addEventListener('scroll', () => {
-        // Se rolar mais que 50 pixels pra baixo
         if (window.scrollY > 50) {
             navbar.classList.remove('transparent');
             navbar.classList.add('scrolled');
@@ -34,67 +33,103 @@ export function initNavbar() {
     });
 
     // =========================================
-    //   FUNÇÃO GERAL PARA ABRIR QUALQUER SIDEBAR
+    //   FUNÇÃO GERAL PARA ABRIR PAINÉIS
     // =========================================
     function toggleSidebar(sidebarElement) {
-        // Se a sidebar alvo JÁ ESTÁ ativa, nós a fechamos (e o overlay junto)
         if (sidebarElement.classList.contains('active')) {
             sidebarElement.classList.remove('active');
             overlay.classList.remove('active');
             document.body.style.overflow = '';
-        } 
-        // Se ela está fechada, abrimos ela.
-        else {
-            // Antes de abrir, garante que a outra sidebar esteja fechada para não dar conflito!
+        } else {
             sidebarMenu.classList.remove('active');
             sidebarLogin.classList.remove('active');
+            if(registerModal) registerModal.classList.remove('active');
             
-            // Abre a sidebar selecionada
             sidebarElement.classList.add('active');
             overlay.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Bloqueia scroll do site
+            document.body.style.overflow = 'hidden'; 
         }
     }
 
-    // =========================================
-    //   EVENT LISTERNERS (CLIQUES)
-    // =========================================
+    // Função para o Modal de Cadastro
+    function toggleModal() {
+        if (registerModal.classList.contains('active')) {
+            registerModal.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        } else {
+            // Fecha a Sidebar de Login antes de abrir o modal
+            sidebarLogin.classList.remove('active'); 
+            
+            registerModal.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    }
 
-    // Cliques no Menu Esquerdo
+    // Cliques nos Menus e Modal
     if(menuBtn) menuBtn.addEventListener('click', () => toggleSidebar(sidebarMenu));
     if(closeMenuBtn) closeMenuBtn.addEventListener('click', () => toggleSidebar(sidebarMenu));
 
-    // Cliques no Login Direito
     if(loginBtn) loginBtn.addEventListener('click', () => toggleSidebar(sidebarLogin));
     if(closeLoginBtn) closeLoginBtn.addEventListener('click', () => toggleSidebar(sidebarLogin));
 
-    // O clique no fundo escuro (overlay) fecha qualquer painel que estiver aberto
+    if(openRegisterBtn) openRegisterBtn.addEventListener('click', toggleModal);
+    if(leftRegisterBtn) leftRegisterBtn.addEventListener('click', toggleModal); // NOVO CLIQUE
+    if(closeModalBtn) closeModalBtn.addEventListener('click', toggleModal);
+
+    // Fechar clicando no fundo escuro
     if(overlay) {
         overlay.addEventListener('click', () => {
             sidebarMenu.classList.remove('active');
             sidebarLogin.classList.remove('active');
+            if(registerModal) registerModal.classList.remove('active');
             overlay.classList.remove('active');
             document.body.style.overflow = '';
         });
     }
 
     // =========================================
-    //   MOSTRAR/OCULTAR SENHA (BÔNUS)
+    //   MOSTRAR/OCULTAR SENHA (GLOBAL)
     // =========================================
-    const togglePasswordBtn = document.querySelector('.toggle-password');
-    const passwordInput = document.getElementById('login-senha');
-
-    if (togglePasswordBtn && passwordInput) {
-        togglePasswordBtn.addEventListener('click', () => {
-            const icon = togglePasswordBtn.querySelector('span');
+    const togglePasswordBtns = document.querySelectorAll('.toggle-password');
+    
+    togglePasswordBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault(); // Impede qualquer recarregamento acidental
             
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
+            // Acha a div "input-group" e pega o input que está lá dentro (não falha nunca!)
+            const inputGroup = btn.closest('.input-group');
+            const input = inputGroup.querySelector('input');
+            const icon = btn.querySelector('span');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
                 icon.textContent = 'visibility';
             } else {
-                passwordInput.type = 'password';
+                input.type = 'password';
                 icon.textContent = 'visibility_off';
             }
+        });
+    });
+
+    // =========================================
+    //   MÁSCARA DE TELEFONE (+55 (00) 00000-0000)
+    // =========================================
+    const phoneInput = document.getElementById('reg-telefone');
+    if(phoneInput) {
+        phoneInput.addEventListener('input', (e) => {
+            // Remove tudo que não é número
+            let value = e.target.value.replace(/\D/g, "");
+            
+            // Vai montando a string dinamicamente
+            if (value.length > 0) value = "+" + value;
+            if (value.length > 3) value = value.replace(/^(\+\d{2})(\d)/, "$1 ($2");
+            if (value.length > 7) value = value.replace(/(\(\d{2})(\d)/, "$1) $2");
+            if (value.length > 13) value = value.replace(/(\d{5})(\d)/, "$1-$2");
+            
+            // Limita o tamanho para o formato perfeito
+            e.target.value = value.substring(0, 19);
         });
     }
 }

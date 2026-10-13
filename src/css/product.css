@@ -174,6 +174,76 @@
 }
 .acc-content p { padding-bottom: 25px; font-size: 14px; color: #666; line-height: 1.6; }
 
+/* =========================================
+       PREÇO DINÂMICO E DESCONTOS
+========================================= */
+.price-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+    font-family: var(--font-main);
+}
+
+.old-price {
+    font-size: 16px;
+    color: #999;
+    text-decoration: line-through;
+    font-weight: 400;
+}
+
+.current-price {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--color-black);
+}
+
+/* O Desconto Verde Perfeito */
+.discount-badge {
+    background-color: #00a650; /* Verde clássico de ofertas */
+    color: #ffffff;
+    padding: 3px 10px;
+    border-radius: 50px; /* Arredondado */
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 5px rgba(0, 166, 80, 0.3);
+}
+
+/* Informação de Estoque e Cores (Correção do atropelamento) */
+.color-options {
+    display: flex; 
+    gap: 15px; 
+    margin-bottom: 12px; /* Adicionado espaço aqui! */
+}
+
+.stock-info {
+    font-size: 13px;
+    color: #2e7d32;
+    font-weight: 500;
+    display: block; /* Garante que fica na sua própria linha */
+}
+
+.stock-info.out { color: #d32f2f; }
+
+/* Nova Lógica da Galeria Mista (Fotos + Vídeos) */
+.main-media {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: contain; /* MÁGICA: Faz a imagem caber inteira sem cortar! */
+    background-color: #f5f5f5; /* Fundo cinza luxuoso nas bordas que sobrarem */
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 1;
+    pointer-events: none;
+}
+.main-media.active {
+    opacity: 1;
+    z-index: 2;
+    pointer-events: auto;
+}
+
 
 /* =========================================
              RESPONSIVIDADE MOBILE

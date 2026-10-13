@@ -370,6 +370,69 @@
 }
 
 /* =========================================
+            MODAL DE CADASTRO (CENTER)
+========================================= */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* O transform centraliza perfeitamente e aplica um leve scale para animação */
+    transform: translate(-50%, -50%) scale(0.95);
+    width: 100%;
+    max-width: 650px; /* Largura ideal para caber duas colunas em monitores */
+    background-color: var(--color-primary);
+    border-radius: 20px; /* Cantos arredondados modernos */
+    z-index: 3000; /* Acima do Overlay (1500) */
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    overflow: hidden;
+}
+
+.modal.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.modal-content {
+    padding: 40px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.modal-title {
+    font-size: 22px;
+    font-weight: 500;
+}
+
+/* Divisão dos Inputs lado a lado no Desktop/Tablet */
+.input-row {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+/* Ajuste específico para o input de data manter a estética flutuante da BICS */
+input[type="date"] {
+    color: transparent; /* Esconde a data vazia inicialmente */
+}
+input[type="date"]:focus,
+input[type="date"]:valid {
+    color: var(--color-black); /* Mostra quando clica ou preenche */
+}
+
+/* =========================================
                RESPONSIVIDADE
 ========================================= */
 /* Tablets (Deitados e em pé) */
@@ -388,4 +451,20 @@
     .sidebar-header { margin-bottom: 40px; }
     /* Corrige o right no mobile para garantir que feche 100% */
     .sidebar.sidebar-right { right: -100%; }
+
+    .modal {
+        width: 92%; /* Ocupa quase a tela toda no celular */
+        max-height: 90vh; /* Se a tela for pequena, permite rolar por dentro */
+        overflow-y: auto;
+    }
+    .modal-content {
+        padding: 30px 20px;
+    }
+    .input-row {
+        flex-direction: column; /* Empilha os inputs um embaixo do outro no celular */
+        gap: 20px;
+    }
+    .mt-20 {
+        margin-top: 10px;
+    }
 }
