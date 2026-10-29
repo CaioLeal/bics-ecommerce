@@ -5,7 +5,7 @@
 
 ---
 
-### 📍 Why this Project?
+### 📍 Why this Project?1
 
 This project was developed as a comprehensive portfolio piece focused on **Full-Stack development and high-end UI/UX**, themed around BICS, a luxury fashion and lifestyle brand. The main goal was to build a complete, production-ready e-commerce platform featuring a dynamic public storefront and a robust, Single-Page Application (SPA) styled administrative dashboard.
 
